@@ -1,26 +1,20 @@
-let pack = {
-    textures: {
-	   base: [
-       blocks = [
-         cobblestone = "blocks/cobblestone.json",
-         stone = "blocks/stone.json",
-         dirt = "blocks/dirt.json"
-       ],
-      items = [
-        stick = "items.stick.json",
-        wooden_pickaxe = "items/wooden_pickaxe.json"
-      ]
-     ]
-   }
- }
+let obj = null;
 
-var test = JSON.stringify(pack);
+async function load() {
+    let url = 'https://raw.githubusercontent.com/VelvetRemedy/pack-release-builder/mane/assets.json';
+    try {
+        obj = await (await fetch(url)).json();
+    } catch(e) {
+        console.log('error');
+    }
+}
 
-// helper function: log message to screen
+load();
+
 function log(msg) {
   document.getElementById("log").textContent += msg + "\n";
 }
-// setup websocket with callbacks
+
 var ws = new WebSocket("ws://localhost:8080/");
 ws.onopen = function () {
   log("CONNECT");
@@ -33,5 +27,6 @@ ws.onmessage = function (event) {
 };
 function sendMessage() {
   var msgtxt = document.getElementById("id").value;
+  var test = JSON.stringify(obj);
   ws.send(test);
 }
