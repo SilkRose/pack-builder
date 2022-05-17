@@ -1,3 +1,21 @@
+let pack = {
+    textures: {
+	   base: [
+       blocks = [
+         cobblestone = "blocks/cobblestone.json",
+         stone = "blocks/stone.json",
+         dirt = "blocks/dirt.json"
+       ],
+      items = [
+        stick = "items.stick.json",
+        wooden_pickaxe = "items/wooden_pickaxe.json"
+      ]
+     ]
+   }
+ }
+
+var test = JSON.stringify(pack);
+
 // helper function: log message to screen
 function log(msg) {
   document.getElementById("log").textContent += msg + "\n";
@@ -15,5 +33,5 @@ ws.onmessage = function (event) {
 };
 function sendMessage() {
   var msgtxt = document.getElementById("id").value;
-  ws.send(msgtxt);
+  ws.send(test);
 }
