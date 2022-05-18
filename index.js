@@ -1,32 +1,40 @@
-let obj = null;
+const get_json = fetch("https://raw.githubusercontent.com/VelvetRemedy/pack-release-builder/mane/assets.json")
+    .then((response) => response.json())
+    .then((user) => {
+        return user.repos;
+    });
 
-async function load() {
-    let url = 'https://raw.githubusercontent.com/VelvetRemedy/pack-release-builder/mane/assets.json';
-    try {
-        obj = await (await fetch(url)).json();
-    } catch(e) {
-        console.log('error');
+const generate_options = async () => {
+    const assets = await get_json;
+    document.querySelector("#builder").innerHTML = "";
+    for (c in assets.addons) {
+        console.log(assets.addons[c]);
     }
+};
+
+function load_assets() {
+    generate_options();
 }
 
-load();
-
 function log(msg) {
-  document.getElementById("log").textContent += msg + "\n";
+    document.getElementById("log").textContent += msg + "\n";
 }
 
 var ws = new WebSocket("ws://localhost:8080/");
 ws.onopen = function () {
-  log("CONNECT");
+    log("CONNECT");
 };
 ws.onclose = function () {
-  log("DISCONNECT");
+    log("DISCONNECT");
 };
 ws.onmessage = function (event) {
-  log("MESSAGE: " + event.data);
+    log("MESSAGE: " + event.data);
 };
+
 function sendMessage() {
-  var msgtxt = document.getElementById("id").value;
-  var test = JSON.stringify(obj);
-  ws.send(test);
+    var msgtxt = document.getElementById("id").value;
+    var test = JSON.stringify(obj);
+    ws.send(test);
 }
+
+load_assets();
