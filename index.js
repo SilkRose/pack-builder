@@ -13,16 +13,23 @@ const generate_options = async () => {
         for (a in assets.addons[c].variants) {
             if (assets.addons[c].default == assets.addons[c].variants[a].id) {
                 document.querySelector(`#${assets.addons[c].name}`).innerHTML += `<div>
-                    <input type="radio" value="" name="${assets.addons[c].name}" checked="true"><p>${assets.addons[c].variants[a].name}</p></input>
+                    <input type="radio" value="${assets.addons[c].variants[a].name}" name="${assets.addons[c].name}" checked="true"><p>${assets.addons[c].variants[a].name}</p></input>
                 </div>`;
             } else {
                 document.querySelector(`#${assets.addons[c].name}`).innerHTML += `<div>
-                    <input type="radio" value="" name="${assets.addons[c].name}"><p>${assets.addons[c].variants[a].name}</p></input>
+                    <input type="radio" value="${assets.addons[c].variants[a].name}" name="${assets.addons[c].name}"><p>${assets.addons[c].variants[a].name}</p></input>
                 </div>`;
             }
         }
     }
 };
+
+function get_selected() {
+    var selections = document.querySelectorAll('input[type="radio"]:checked');
+    for (var selected of selections) {
+        document.getElementById("log").textContent += selected.value + "\n";
+    }
+}
 
 function load_assets() {
     generate_options();
