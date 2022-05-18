@@ -40,19 +40,30 @@ function log(msg) {
     document.getElementById("log").textContent += msg + "\n";
 };
 
-var ws = new WebSocket("ws://mc.love-tolerance.com:24808/");
-ws.onopen = function () {
-    log("CONNECT");
-};
-ws.onclose = function () {
-    log("DISCONNECT");
-};
-ws.onmessage = function (event) {
-    log("MESSAGE: " + event.data);
-};
+function connect() {
+    return new Promise(function(resolve, reject) {
+        var server = new WebSocket("ws://mc.love-tolerance.com:24808/");
+        server.onopen = function() {
+            resolve(server);
+        };
+        server.onerror = function(err) {
+            reject(err);
+        };
 
-function sendMessage() {
-    ws.send("Pinkie Pie is best pony!");
-};
+    });
+}
+
+function connect_ws() {
+    connect().then(function(server) {
+        server.send("test");
+        server.onmessage = function (event) {
+            log("MESSAGE: " + event.data);
+            console.log(event.data);
+            server.close();
+        };
+    }).catch(function(err) {
+        throw(err);
+    });
+}
 
 load_assets();
