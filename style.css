@@ -1,0 +1,25 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background: #1E1E1E;
+    color: #f55ced;
+    padding: 25px;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+p {
+    display: unset;
+}
+
+div {
+    padding-bottom: 5px;
+}
