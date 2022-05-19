@@ -1,11 +1,11 @@
 const get_json = fetch("https://raw.githubusercontent.com/VelvetRemedy/pack-builder-server/mane/assets.json")
     .then((response) => response.json())
-    .then((user) => {
-        return user.repos;
+    .then((data) => {
+        return data.repos;
     }
 );
 
-const generate_options = async () => {
+const load_builder = async () => {
     const assets = await get_json;
     document.querySelector("#builder").innerHTML = "";
     for (c in assets.addons) {
@@ -30,11 +30,8 @@ function get_selected() {
     for (var selected of selections) {
         id = id.concat("-", selected.id);
     }
+    send_selected(id);
 }
-
-function load_assets() {
-    generate_options();
-};
 
 function log(msg) {
     document.getElementById("log").textContent += msg + "\n";
@@ -53,9 +50,9 @@ function connect() {
     });
 }
 
-function connect_ws() {
+function send_selected(selected) {
     connect().then(function(server) {
-        server.send("test");
+        server.send(selected);
         server.onmessage = function (event) {
             log("MESSAGE: " + event.data);
             console.log(event.data);
@@ -66,4 +63,4 @@ function connect_ws() {
     });
 }
 
-load_assets();
+load_builder();
